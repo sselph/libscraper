@@ -6,6 +6,7 @@ package main
 import "C"
 
 import (
+	"context"
 	"crypto/sha1"
 	"encoding/xml"
 	"fmt"
@@ -23,7 +24,7 @@ func initGDB(system int32) bool {
 		fmt.Printf("hasher: %s", err)
 		return false
 	}
-	hm, err := ds.CachedHashMap("", true)
+	hm, err := ds.CachedHashMap(context.Background(), "", true)
 	if err != nil {
 		fmt.Println("hm: %s", err)
 		return false
@@ -42,7 +43,7 @@ func initSS(system int32) bool {
 		fmt.Printf("hasher: %s", err)
 		return false
 	}
-	hm, err := ds.CachedHashMap("", true)
+	hm, err := ds.CachedHashMap(context.Background(), "", true)
 	if err != nil {
 		fmt.Println("hm: %s", err)
 		return false
@@ -77,7 +78,7 @@ func initSS(system int32) bool {
 }
 
 func initMAME(system int32) bool {
-	mds, err := ds.NewMAME("", true)
+	mds, err := ds.NewMAME(context.Background(), "", true)
 	if err != nil {
 		fmt.Println("mds: %s", err)
 		return false

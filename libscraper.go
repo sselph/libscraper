@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"strconv"
@@ -82,9 +83,9 @@ func (s *server) scrape(path, imgPath string, arcade bool) ([]game, error) {
 			return nil, fmt.Errorf("extension unknown: %s", r.Ext)
 		}
 		if arcade {
-			err = r.GetGame(s.arcade, &rom.GameOpts{AddNotFound: true})
+			err = r.GetGame(context.Background(), s.arcade, &rom.GameOpts{AddNotFound: true})
 		} else {
-			err = r.GetGame(s.console, &rom.GameOpts{AddNotFound: true})
+			err = r.GetGame(context.Background(), s.console, &rom.GameOpts{AddNotFound: true})
 		}
 		if err != nil {
 			log.Print(err)
@@ -96,7 +97,7 @@ func (s *server) scrape(path, imgPath string, arcade bool) ([]game, error) {
 		g := toGame(r.Game, arcade)
 		g.CRCMatch = true
 		if imgPath != "" && g.Image != nil {
-			if err := g.Image.Save(imgPath, 400, 400); err == nil {
+			if err := g.Image.Save(context.Background(), imgPath, 400, 400); err == nil {
 				g.ImagePath = imgPath
 			}
 		}
